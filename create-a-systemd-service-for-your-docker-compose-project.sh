@@ -22,7 +22,7 @@ ExecStartPre=$(which docker-compose) down
 ExecStart=$(which docker-compose) up
 
 # Stop container when unit is stopped
-ExecStop=$(which docker-compose) down
+ExecStop=$(which docker-compose) down --remove-orphans
 
 ExecReload=$(which docker-compose) pull --quiet
 ExecReload=$(which docker-compose) up -d
@@ -31,7 +31,7 @@ ExecReload=$(which docker-compose) up -d
 WantedBy=multi-user.target
 EOF
 
-echo "Creating systemd reload eervice... /etc/systemd/system/${SERVICENAME}-reload.service"
+echo "Creating systemd reload service... /etc/systemd/system/${SERVICENAME}-reload.service"
 # Create systemd service file
 sudo cat >/etc/systemd/system/$SERVICENAME-reload.service <<EOF
 
