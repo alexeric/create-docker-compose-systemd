@@ -25,7 +25,7 @@ ExecStart=$(which docker-compose) up
 ExecStop=$(which docker-compose) down --remove-orphans
 
 ExecReload=$(which docker-compose) pull --quiet
-ExecReload=$(which docker-compose) up -d
+ExecReload=$(which docker-compose) up -d --remove-orphans
 
 [Install]
 WantedBy=multi-user.target
