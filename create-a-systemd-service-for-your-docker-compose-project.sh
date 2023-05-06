@@ -1,6 +1,27 @@
 #!/bin/bash
 SERVICENAME=$(basename $(pwd))
 
+EXECUTIONTIME="05:00:00"
+
+while getopts 't:h' opt; do
+  case "$opt" in
+    t)
+      arg="$OPTARG"
+      echo "Processing option 't' with '${OPTARG}' argument"
+      EXECUTIONTIME=${OPTARG}
+      ;;
+
+    ?|h)
+      echo "Usage: $(basename $0) [-t hh:mm:ss]"
+      exit 1
+      ;;
+    *)
+      echo "No parameter given using EXECUTIONTIME='${EXECUTIONTIME}'"
+      ;;
+  esac
+done
+shift "$(($OPTIND -1))"
+
 echo "Creating systemd service... /etc/systemd/system/${SERVICENAME}.service"
 # Create systemd service file
 sudo cat >/etc/systemd/system/$SERVICENAME.service <<EOF
@@ -56,7 +77,7 @@ Requires=$SERVICENAME.service
 After=$SERVICENAME.service
 
 [Timer]
-OnCalendar=*-*-* 5:00:00
+OnCalendar=*-*-* $EXECUTIONTIME
 
 [Install]
 WantedBy=timers.target
