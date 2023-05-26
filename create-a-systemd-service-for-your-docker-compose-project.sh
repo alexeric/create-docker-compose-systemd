@@ -49,6 +49,7 @@ ExecReload=$(which docker-compose) pull --quiet
 ExecReload=$(which docker-compose) up -d --remove-orphans
 
 [Install]
+TimeoutSec=360
 WantedBy=multi-user.target
 EOF
 
