@@ -45,8 +45,8 @@ ExecStart=$(which docker-compose) up
 # Stop container when unit is stopped
 ExecStop=$(which docker-compose) down --remove-orphans
 
-ExecReload=$(which docker-compose) pull --quiet
-ExecReload=$(which docker-compose) up -d --remove-orphans
+ExecReload=$(which docker-compose) pull --quiet \
+           $(which docker-compose) up -d --remove-orphans
 
 [Install]
 TimeoutSec=360
