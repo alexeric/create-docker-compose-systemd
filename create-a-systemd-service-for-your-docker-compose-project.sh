@@ -49,7 +49,6 @@ ExecReload=$(which docker-compose) pull --quiet \
            $(which docker-compose) up -d --remove-orphans
 
 [Install]
-TimeoutSec=360
 WantedBy=multi-user.target
 EOF
 
@@ -61,6 +60,7 @@ sudo cat >/etc/systemd/system/$SERVICENAME-reload.service <<EOF
 Description=Refresh images and update containers
 
 [Service]
+TimeoutSec=360
 Type=oneshot
 
 ExecStart=/bin/systemctl reload-or-restart $SERVICENAME.service
