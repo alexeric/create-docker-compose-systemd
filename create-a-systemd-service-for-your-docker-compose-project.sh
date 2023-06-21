@@ -52,9 +52,9 @@ ExecReload=$(which docker-compose) up -d --remove-orphans
 WantedBy=multi-user.target
 EOF
 
-echo "Creating systemd reload service... /etc/systemd/system/${SERVICENAME}-reload.service"
+echo "Creating systemd reload service... /etc/systemd/system/${SERVICENAME}-restart.service"
 # Create systemd service file
-sudo cat >/etc/systemd/system/$SERVICENAME-reload.service <<EOF
+sudo cat >/etc/systemd/system/$SERVICENAME-restart.service <<EOF
 
 [Unit]
 Description=Refresh images and update containers
@@ -63,15 +63,15 @@ Description=Refresh images and update containers
 TimeoutSec=360
 Type=oneshot
 
-ExecStart=/bin/systemctl reload-or-restart $SERVICENAME.service
+ExecStart=/bin/systemctl restart $SERVICENAME.service
 
 [Install]
 WantedBy=multi-user.target
 EOF
 
-echo "Creating systemd service... /etc/systemd/system/${SERVICENAME}-reload.timer"
+echo "Creating systemd service... /etc/systemd/system/${SERVICENAME}-restart.timer"
 # Create systemd service file
-sudo cat >/etc/systemd/system/$SERVICENAME-reload.timer <<EOF
+sudo cat >/etc/systemd/system/$SERVICENAME-restart.timer <<EOF
 [Unit]
 Description=Refresh images and update containers
 Requires=$SERVICENAME.service
@@ -89,9 +89,8 @@ echo "Enabling & starting $SERVICENAME"
 # Autostart systemd service
 sudo systemctl enable $SERVICENAME.service
 # Start systemd service now
-sudo systemctl start $SERVICENAME.service
-sudo systemctl enable $SERVICENAME-reload.service
-sudo systemctl enable $SERVICENAME-reload.timer
+sudo systemctl enable $SERVICENAME-restart.service
+sudo systemctl enable $SERVICENAME-restart.timer
 sudo systemctl daemon-reload
-sudo systemctl restart $SERVICENAME-reload.timer
-
+sudo systemctl start $SERVICENAME.service
+sudo systemctl start $SERVICENAME-restart.timer
