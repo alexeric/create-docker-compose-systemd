@@ -34,7 +34,7 @@ After=docker.service
 Restart=always
 User=root
 Group=docker
-TimeoutSec=300
+TimeoutSec=600
 WorkingDirectory=$(pwd)
 # Shutdown container (if running) when unit is started
 ExecStartPre=$(which docker-compose) down
@@ -60,7 +60,7 @@ sudo cat >/etc/systemd/system/$SERVICENAME-restart.service <<EOF
 Description=Refresh images and update containers
 
 [Service]
-TimeoutSec=360
+TimeoutSec=600
 Type=oneshot
 
 ExecStart=/bin/systemctl restart $SERVICENAME.service
