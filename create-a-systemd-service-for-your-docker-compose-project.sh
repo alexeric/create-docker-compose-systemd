@@ -37,6 +37,7 @@ Group=docker
 TimeoutSec=600
 WorkingDirectory=$(pwd)
 # Shutdown container (if running) when unit is started
+ExecStartPre=$(which docker-compose) pull
 ExecStartPre=$(which docker-compose) down
 
 # Start container when unit is started
