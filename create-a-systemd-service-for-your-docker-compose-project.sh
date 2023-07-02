@@ -37,8 +37,8 @@ Group=docker
 TimeoutSec=600
 WorkingDirectory=$(pwd)
 # Shutdown container (if running) when unit is started
-ExecStartPre=$(which docker-compose) pull
-ExecStartPre=$(which docker-compose) down
+ExecStartPre=-$(which docker-compose) pull
+ExecStartPre=-$(which docker-compose) down --remove-orphans
 
 # Start container when unit is started
 ExecStart=$(which docker-compose) up
@@ -46,8 +46,8 @@ ExecStart=$(which docker-compose) up
 # Stop container when unit is stopped
 ExecStop=$(which docker-compose) down --remove-orphans
 
-ExecReload=$(which docker-compose) pull --quiet
-ExecReload=$(which docker-compose) up -d --remove-orphans
+# ExecReload=$(which docker-compose) pull --quiet
+# ExecReload=$(which docker-compose) up -d
 
 [Install]
 WantedBy=multi-user.target
